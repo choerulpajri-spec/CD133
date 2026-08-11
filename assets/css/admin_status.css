@@ -1,0 +1,349 @@
+/* ===================================================================
+   CD 133 PRODUCTION — UPDATE STATUS PESANAN
+   Style KHUSUS halaman ini.
+   Catatan: komponen umum (page-header, filter-bar, table, badge, modal,
+   toast, action button) pada project ini sebagian ada di admin_index.css,
+   sebagian tidak tersedia.
+   Agar halaman status tetap tampil benar, komponen yang dipakai di
+   admin/status/index.php ditambahkan di sini.
+=================================================================== */
+
+
+/* ---------- STEPPER VISUAL (pengganti dropdown) ---------- */
+/* User klik tahap yang dituju → lebih intuitif untuk alur produksi */
+
+.stepper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin: 8px 0 20px;
+    padding: 18px 12px;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    overflow-x: auto;
+}
+
+.stepper__step {
+    flex: 1;
+    min-width: 110px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    cursor: pointer;
+    padding: 8px 4px;
+    border-radius: var(--radius-sm);
+    transition: background .15s ease;
+}
+
+.stepper__step:hover:not(.is-disabled) {
+    background: rgba(217, 179, 130, .12);
+}
+
+.stepper__step.is-disabled {
+    cursor: not-allowed;
+    opacity: .45;
+}
+
+/* Garis jahitan antar step */
+.stepper__step::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: -50%;
+    width: 100%;
+    height: 0;
+    border-top: 2px dashed var(--border);
+    z-index: 0;
+}
+.stepper__step:first-child::before { display: none; }
+
+.stepper__step.is-done::before { border-top-color: var(--done); }
+.stepper__step.is-current::before { border-top-color: var(--thread); }
+
+/* Dot */
+.stepper__dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    transition: all .2s ease;
+}
+
+.stepper__step.is-done .stepper__dot {
+    background: var(--done);
+    border-color: var(--done);
+    color: #fff;
+}
+.stepper__step.is-done .stepper__dot::after { content: '✓'; }
+
+.stepper__step.is-current .stepper__dot {
+    background: var(--thread);
+    border-color: var(--thread);
+    color: #2A1604;
+    box-shadow: 0 0 0 4px var(--thread-soft);
+}
+
+.stepper__step.is-target .stepper__dot {
+    background: var(--denim);
+    border-color: var(--denim);
+    color: #fff;
+    transform: scale(1.15);
+    box-shadow: 0 0 0 5px rgba(74, 94, 148, .2);
+}
+
+.stepper__step.is-target .stepper__dot::after { content: '●'; font-size: 10px; }
+
+.stepper__label {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.stepper__step.is-done .stepper__label,
+.stepper__step.is-current .stepper__label,
+.stepper__step.is-target .stepper__label {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.stepper__hint {
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: -4px;
+}
+
+/* ---------- DETAIL INFO PESANAN ---------- */
+.order-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.order-summary__item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--thread);
+}
+
+.order-summary__label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--ink-soft);
+}
+
+.order-summary__value {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+}
+
+.order-summary__value--mono {
+    font-family: 'Courier New', monospace;
+    color: var(--denim);
+    font-weight: 600;
+}
+
+/* ---------- PREVIEW PERUBAHAN ---------- */
+.change-preview {
+    margin-top: 20px;
+    padding: 18px;
+    background: rgba(217, 179, 130, .08);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    display: none;
+}
+
+.change-preview.is-visible { display: block; }
+
+.change-preview__title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.change-preview__flow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.change-preview__from,
+.change-preview__to {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.change-preview__arrow {
+    color: var(--ink-soft);
+    font-size: 16px;
+}
+
+.change-preview__warning {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(201, 138, 43, .1);
+    border-left: 3px solid var(--warn);
+    border-radius: var(--radius-sm);
+    font-size: 12.5px;
+    color: var(--ink);
+    display: none;
+}
+
+.change-preview__warning.is-visible { display: block; }
+
+/* ---------- HISTORY LOG ---------- */
+.history-log {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border);
+}
+
+.history-log__title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 12px;
+}
+
+.history-log__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.history-log__item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 13px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.history-log__item:last-child { border-bottom: none; }
+
+.history-log__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--thread);
+    margin-top: 6px;
+    flex-shrink: 0;
+}
+
+.history-log__content { flex: 1; }
+
+.history-log__content strong { color: var(--ink); }
+.history-log__content span { color: var(--ink-soft); font-size: 12px; }
+
+.history-log__empty {
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-style: italic;
+    padding: 8px 0;
+}
+
+/* ---------- FORM ACTIONS ---------- */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border);
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.form-actions .btn { padding: 10px 20px; font-size: 13.5px; }
+
+/* ---------- STATUS CELL (di tabel list) ---------- */
+.status-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-cell__progress {
+    flex: 1;
+    max-width: 80px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.status-cell__bar {
+    height: 100%;
+    background: var(--thread);
+    border-radius: 2px;
+    transition: width .3s ease;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .order-summary { grid-template-columns: 1fr; }
+    
+    .stepper {
+        padding: 14px 8px;
+    }
+    .stepper__step { min-width: 90px; }
+    .stepper__dot { width: 24px; height: 24px; font-size: 11px; }
+    .stepper__label { font-size: 11px; }
+    .stepper__hint { display: none; }
+}
+
+@media (max-width: 480px) {
+    .stepper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .stepper__step {
+        flex-direction: row;
+        min-width: auto;
+        text-align: left;
+        padding: 10px 12px;
+    }
+    .stepper__step::before {
+        top: -50%;
+        left: 22px;
+        width: 0;
+        height: 100%;
+        border-top: none;
+        border-left: 2px dashed var(--border);
+    }
+    .stepper__step.is-done::before { border-left-color: var(--done); }
+    .stepper__step.is-current::before { border-left-color: var(--thread); }
+}

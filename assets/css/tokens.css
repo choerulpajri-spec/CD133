@@ -1,0 +1,76 @@
+/* ===================================================================
+   CD 133 PRODUCTION — DESIGN TOKENS
+   Dipakai bersama oleh halaman internal (dashboard.css) dan
+   halaman publik customer (public.css). Ubah di sini saja kalau
+   mau ganti tema warna di seluruh aplikasi.
+=================================================================== */
+
+:root {
+    --bg:            #FAF7F1;
+    --surface:       #FFFFFF;
+    --ink:           #1E2233;
+    --ink-soft:      #6B6F80;
+    --border:        #E7E1D6;
+
+    --denim:         #2C3A63;
+    --denim-light:   #44578C;
+    --denim-soft:    #DCE2F0;
+
+    --thread:        #C97A2B;
+    --thread-soft:   #F4E3CB;
+
+    --done:          #3F7D58;
+    --done-soft:     #DCEEE2;
+
+    --warn:          #B5481B;
+    --warn-soft:     #F6DDD2;
+
+    --radius:        14px;
+    --radius-sm:     8px;
+    --shadow:        0 8px 24px rgba(30, 34, 51, 0.06);
+
+    --font-display:  'Sora', sans-serif;
+    --font-body:     'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+    outline: 2px solid var(--denim-light);
+    outline-offset: 2px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.badge--selesai  { background: var(--done-soft);   color: var(--done); }
+.badge--menunggu { background: var(--warn-soft);   color: var(--warn); }
+.badge--proses   { background: var(--thread-soft); color: #8A4E14; }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 11px 18px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+.btn--accent { background: var(--thread); color: #2A1604; }
+.btn--accent:hover { background: #B56C22; }

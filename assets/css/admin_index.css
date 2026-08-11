@@ -1,0 +1,483 @@
+/* ===================================================================
+   CD 133 PRODUCTION — DASHBOARD INTERNAL
+   Style spesifik halaman dashboard admin.
+   Token & komponen dasar ada di tokens.css.
+=================================================================== */
+
+/* ---------- LAYOUT SHELL ---------- */
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+    padding: 28px 32px 56px;
+}
+
+/* ---------- SIDEBAR ---------- */
+.sidebar {
+    width: 252px;
+    flex-shrink: 0;
+    background: var(--denim);
+    color: #fff;
+    padding: 24px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.sidebar__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 6px;
+}
+
+.sidebar__mark {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    background: var(--thread);
+    color: #2A1604;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: .02em;
+}
+
+.sidebar__brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+.sidebar__brand-text strong {
+    font-family: var(--font-display);
+    font-size: 15px;
+}
+.sidebar__brand-text span {
+    font-size: 11px;
+    letter-spacing: .08em;
+    color: #B9C2DE;
+    text-transform: uppercase;
+}
+
+/* Nav — dibingkai garis jahitan (motif konveksi) */
+.sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px dashed rgba(255, 255, 255, .18);
+    border-bottom: 1px dashed rgba(255, 255, 255, .18);
+    padding: 14px 0;
+    flex: 1;
+}
+
+.sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    color: #CBD3E8;
+    transition: background .15s ease, color .15s ease;
+}
+.sidebar__link .sidebar__icon {
+    width: 18px;
+    text-align: center;
+    font-size: 13px;
+    opacity: .85;
+}
+.sidebar__link:hover {
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
+    text-decoration: none;
+}
+.sidebar__link.is-active {
+    background: var(--thread);
+    color: #2A1604;
+    font-weight: 600;
+}
+
+.sidebar__logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #CBD3E8;
+    border-radius: var(--radius-sm);
+}
+.sidebar__logout:hover {
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
+    text-decoration: none;
+}
+
+.sidebar__overlay { display: none; }
+
+/* ---------- TOPBAR ---------- */
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+
+.topbar__menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.topbar__menu-btn span {
+    height: 2px;
+    width: 16px;
+    margin: 0 auto;
+    background: var(--ink);
+    display: block;
+}
+
+.topbar__greeting { flex: 1; min-width: 200px; }
+
+.topbar__eyebrow {
+    margin: 0 0 4px;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--denim-light);
+    font-weight: 600;
+}
+
+.topbar__greeting h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.topbar__clock {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding: 6px 12px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+}
+
+/* ---------- STAT CARDS ---------- */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: var(--shadow);
+    border-top: 3px solid var(--denim);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-card--warn { border-top-color: var(--warn); }
+.stat-card--done { border-top-color: var(--done); }
+.stat-card--info { border-top-color: var(--info); }
+.stat-card--danger { border-top-color: var(--danger); }
+
+.stat-card__value {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.stat-card__label {
+    font-size: 13px;
+    color: var(--ink-soft);
+}
+
+/* ---------- PANEL ---------- */
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+}
+
+.panel__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 14px;
+}
+
+.panel__head h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.panel__hint { font-size: 12px; color: var(--ink-soft); }
+
+.panel__link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--denim-light);
+    white-space: nowrap;
+}
+.panel__link:hover { text-decoration: underline; }
+
+.empty-state {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 0;
+    padding: 12px 0;
+}
+
+/* ---------- INFO BOX (pengganti welcome message) ---------- */
+.info-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--thread);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+}
+
+.info-box p {
+    margin: 0 0 8px;
+    color: var(--ink);
+    line-height: 1.65;
+}
+.info-box p:last-child { margin-bottom: 0; }
+.info-box strong { color: var(--denim); font-weight: 600; }
+
+.info-box__tip {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(217, 179, 130, .12);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--ink);
+}
+
+kbd {
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    padding: 2px 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-shadow: 0 1px 0 var(--border);
+}
+
+/* ---------- TRACKER (status pesanan berjalan) ---------- */
+.tracker { padding: 14px 0; }
+.tracker + .tracker { border-top: 1px dashed var(--border); }
+
+.tracker__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 14px;
+}
+.tracker__info strong { font-size: 14px; }
+.tracker__info span { font-size: 13px; color: var(--ink-soft); }
+
+.tracker__steps {
+    display: flex;
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 0;
+}
+
+.tracker__step {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+/* Garis jahitan antar tahap */
+.tracker__step::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: -50%;
+    width: 100%;
+    height: 0;
+    border-top: 2px dashed var(--border);
+    z-index: 0;
+}
+.tracker__step:first-child::before { display: none; }
+
+.tracker__step.is-done::before,
+.tracker__step.is-current::before {
+    border-top-color: var(--thread);
+}
+
+.tracker__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    z-index: 1;
+}
+
+.tracker__step.is-done .tracker__dot {
+    background: var(--thread);
+    border-color: var(--thread);
+}
+.tracker__step.is-current .tracker__dot {
+    background: var(--surface);
+    border-color: var(--thread);
+    box-shadow: 0 0 0 3px var(--thread-soft);
+}
+
+.tracker__label {
+    font-size: 12px;
+    color: var(--ink-soft);
+}
+.tracker__step.is-done .tracker__label,
+.tracker__step.is-current .tracker__label {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.tracker__eta {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+/* ---------- TABLE ---------- */
+.table-wrap { overflow-x: auto; }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+}
+
+.table th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--ink-soft);
+    padding: 0 12px 10px;
+    border-bottom: 1px dashed var(--border);
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.table tbody tr:last-child td { border-bottom: none; }
+
+.table tbody tr:hover { background: rgba(217, 179, 130, .06); }
+
+.table__action {
+    color: var(--denim-light);
+    font-weight: 600;
+}
+.table__action:hover { text-decoration: underline; }
+
+/* ---------- TOAST ---------- */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--surface);
+    color: var(--ink);
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--thread);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(400px);
+    transition: transform .35s ease;
+    z-index: 100;
+    font-size: 13.5px;
+    max-width: 320px;
+}
+.toast.is-visible { transform: translateX(0); }
+.toast--success { border-left-color: var(--done); }
+.toast--warn    { border-left-color: var(--warn); }
+.toast--danger  { border-left-color: var(--danger); }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .tracker__label { font-size: 11px; }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        z-index: 40;
+        transform: translateX(-100%);
+        transition: transform .2s ease;
+    }
+    .sidebar.is-open { transform: translateX(0); }
+
+    .sidebar__overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 17, 26, .45);
+        z-index: 30;
+    }
+    .sidebar__overlay.is-visible { display: block; }
+
+    .topbar__menu-btn { display: flex; }
+
+    .main { padding: 20px 16px 48px; }
+
+    .stats { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+    .tracker__label { display: none; }
+    .topbar__clock { display: none; }
+}

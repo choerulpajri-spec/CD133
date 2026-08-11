@@ -1,0 +1,709 @@
+/* ===================================================================
+   CD 133 PRODUCTION — KELOLA PRODUK
+   Style spesifik halaman kelola produk.
+   Token & komponen dasar ada di tokens.css.
+=================================================================== */
+
+/* ---------- PAGE HEADER ---------- */
+.page-header {
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.page-header__title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 8px;
+}
+
+.page-header__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--ink-soft);
+}
+
+.page-header__breadcrumb a {
+    color: var(--denim-light);
+    font-weight: 500;
+}
+
+.page-header__breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.page-header__breadcrumb span {
+    color: var(--ink-soft);
+}
+
+/* ---------- FILTER BAR ---------- */
+.filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-bar__search {
+    flex: 1;
+    min-width: 200px;
+    padding: 9px 14px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    transition: border-color .15s ease;
+}
+
+.filter-bar__search:focus {
+    outline: none;
+    border-color: var(--denim-light);
+    box-shadow: 0 0 0 3px rgba(74, 94, 148, .1);
+}
+
+.filter-bar__select {
+    padding: 9px 14px;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    min-width: 160px;
+}
+
+.filter-bar__select:focus {
+    outline: none;
+    border-color: var(--denim-light);
+}
+
+.filter-bar__count {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-left: auto;
+}
+
+/* ---------- PRODUK TABLE ---------- */
+.produk-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.produk-table__wrap {
+    overflow-x: auto;
+}
+
+.produk-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+}
+
+.produk-table thead {
+    background: var(--bg);
+    border-bottom: 2px solid var(--border);
+}
+
+.produk-table th {
+    text-align: left;
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+}
+
+.produk-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink);
+    vertical-align: middle;
+}
+
+.produk-table tbody tr {
+    transition: background .15s ease;
+}
+
+.produk-table tbody tr:hover {
+    background: rgba(217, 179, 130, .06);
+}
+
+.produk-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ---------- PRODUK CELL (gambar + nama) ---------- */
+.produk-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.produk-cell__thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    flex-shrink: 0;
+}
+
+.produk-cell__thumb--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-size: 18px;
+    background: var(--bg);
+}
+
+.produk-cell__name {
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.produk-cell__category {
+    display: inline-block;
+    margin-top: 2px;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    padding: 2px 8px;
+    background: var(--bg);
+    border-radius: 999px;
+    border: 1px solid var(--border);
+}
+
+/* ---------- HARGA & STOK ---------- */
+.produk-table__price {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--denim);
+}
+
+.produk-table__stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+}
+
+.produk-table__stock::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--done);
+}
+
+.produk-table__stock--low {
+    color: var(--warn);
+}
+.produk-table__stock--low::before {
+    background: var(--warn);
+}
+
+.produk-table__stock--empty {
+    color: var(--danger);
+}
+.produk-table__stock--empty::before {
+    background: var(--danger);
+}
+
+.produk-table__stock--ok {
+    color: var(--done);
+}
+
+/* ---------- ACTION BUTTONS ---------- */
+.action-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--denim-light);
+    cursor: pointer;
+    transition: all .15s ease;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    background: var(--denim);
+    color: #fff;
+    border-color: var(--denim);
+    text-decoration: none;
+}
+
+.action-btn--primary {
+    background: var(--denim);
+    color: #fff;
+    border-color: var(--denim);
+}
+
+.action-btn--primary:hover {
+    background: var(--denim-dark);
+}
+
+.action-btn--danger {
+    color: var(--danger);
+    border-color: var(--border);
+}
+
+.action-btn--danger:hover {
+    background: var(--danger);
+    color: #fff;
+    border-color: var(--danger);
+}
+
+.action-btn--thread {
+    background: var(--thread);
+    color: #2A1604;
+    border-color: var(--thread);
+}
+
+.action-btn--thread:hover {
+    background: #C89E6A;
+    color: #2A1604;
+}
+
+/* ---------- FORM PRODUK ---------- */
+.form-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+}
+
+.form-panel__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.form-panel__title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+}
+
+.form-panel__hint {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+}
+
+/* Form Grid - 2 kolom untuk field pendek */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 24px;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group--full {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.form-label__required {
+    color: var(--danger);
+    margin-left: 2px;
+}
+
+.form-label__hint {
+    display: block;
+    margin-top: 2px;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.form-control {
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--denim-light);
+    box-shadow: 0 0 0 3px rgba(74, 94, 148, .1);
+}
+
+.form-control::placeholder {
+    color: var(--ink-soft);
+    opacity: .7;
+}
+
+.form-control--error {
+    border-color: var(--danger);
+}
+
+.form-control--error:focus {
+    box-shadow: 0 0 0 3px rgba(181, 65, 58, .12);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+.form-error {
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: 2px;
+    display: none;
+}
+
+.form-error.is-visible {
+    display: block;
+}
+
+/* ---------- FILE UPLOAD ---------- */
+.file-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.file-upload__dropzone {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.file-upload__dropzone:hover {
+    border-color: var(--denim-light);
+    background: rgba(217, 179, 130, .08);
+}
+
+.file-upload__dropzone.is-dragover {
+    border-color: var(--denim);
+    background: rgba(74, 94, 148, .08);
+}
+
+.file-upload__preview {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+    display: none;
+}
+
+.file-upload__preview.is-visible {
+    display: block;
+}
+
+.file-upload__placeholder {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.file-upload__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-upload__info strong {
+    display: block;
+    font-size: 13.5px;
+    color: var(--ink);
+    margin-bottom: 2px;
+}
+
+.file-upload__info span {
+    font-size: 12px;
+    color: var(--ink-soft);
+}
+
+.file-upload__input {
+    display: none;
+}
+
+.file-upload__remove {
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--danger);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: none;
+}
+
+.file-upload__remove.is-visible {
+    display: inline-block;
+}
+
+.file-upload__remove:hover {
+    background: rgba(181, 65, 58, .08);
+    border-color: var(--danger);
+}
+
+/* ---------- FORM ACTIONS ---------- */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border);
+    flex-wrap: wrap;
+}
+
+.form-actions .action-btn {
+    padding: 10px 20px;
+    font-size: 13.5px;
+}
+
+/* ---------- EMPTY STATE ---------- */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink-soft);
+}
+
+.empty-state__icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: .5;
+}
+
+.empty-state__title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--ink);
+    margin: 0 0 6px;
+}
+
+.empty-state__text {
+    font-size: 14px;
+    margin: 0 0 18px;
+}
+
+/* ---------- MODAL KONFIRMASI ---------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 17, 26, .55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+    animation: fadeIn .2s ease;
+}
+
+.modal-overlay.is-visible {
+    display: flex;
+}
+
+.modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp .25s ease;
+}
+
+.modal__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(181, 65, 58, .12);
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.modal__title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 8px;
+}
+
+.modal__message {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 20px;
+    line-height: 1.55;
+}
+
+.modal__actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- TOAST ---------- */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--surface);
+    color: var(--ink);
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--done);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(400px);
+    transition: transform .35s ease;
+    z-index: 200;
+    font-size: 13.5px;
+    max-width: 320px;
+}
+
+.toast.is-visible {
+    transform: translateX(0);
+}
+
+.toast--danger { border-left-color: var(--danger); }
+.toast--warn { border-left-color: var(--warn); }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-header__title {
+        font-size: 20px;
+    }
+
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-bar__search,
+    .filter-bar__select {
+        width: 100%;
+    }
+
+    .filter-bar__count {
+        margin-left: 0;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .form-panel {
+        padding: 20px;
+    }
+
+    .produk-table th,
+    .produk-table td {
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .produk-cell__thumb {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media (max-width: 560px) {
+    .action-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .file-upload__dropzone {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
