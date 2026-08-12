@@ -1,6 +1,9 @@
 {
   "functions": {
-    "api/index.php": { "runtime": "vercel-php@0.9.0" }
+    "api/index.php": {
+      "runtime": "vercel-php@0.9.0",
+      "includeFiles": "**"
+    }
   },
   "routes": [
     { "src": "/(.*)\\.php$", "dest": "/api/index.php?__path=/$1.php" }
