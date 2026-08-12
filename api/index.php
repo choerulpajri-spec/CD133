@@ -18,3 +18,4 @@ if ($target === false || strpos($target, $root) !== 0 || !file_exists($target)) 
 }
 
 require $target;
+<?php require_once __DIR__ . '/../login.php';
