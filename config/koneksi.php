@@ -1,10 +1,10 @@
 <?php
 
-$db_host = getenv('MYSQLHOST') ?: 'localhost';
-$db_port = getenv('MYSQLPORT') ?: '3306';
-$db_name = getenv('MYSQLDATABASE') ?: 'cd133_production';
+$db_host = getenv('MYSQLHOST') ?: 'acela.proxy.rlwy.net';
+$db_port = getenv('MYSQLPORT') ?: '18853';
+$db_name = getenv('MYSQLDATABASE') ?: 'railway';
 $db_user = getenv('MYSQLUSER') ?: 'root';
-$db_pass = getenv('MYSQLPASSWORD') ?: '';
+$db_pass = getenv('MYSQLPASSWORD') ?: 'DqfuJUNLnkDhATDyNZgUAiWvNfXXUtIw';
 
 try {
     $koneksi = new PDO(
