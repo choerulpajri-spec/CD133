@@ -37,7 +37,9 @@ if ($tgl_akhir === '') {
 
 /* =====================================================================
    QUERY UTAMA: semua pesanan dalam rentang tanggal
-   JOIN ke pembayaran untuk tahu status & total yang sudah diterima
+   JOIN ke pembayaran (SUDAH DI-AGREGASI per id_pesanan) supaya
+   1 pesanan = 1 baris, walaupun di tabel pembayaran ada beberapa
+   baris berstatus 'Diterima' untuk pesanan yang sama.
    ===================================================================== */
 $stmt = $koneksi->prepare("
     SELECT
@@ -50,15 +52,25 @@ $stmt = $koneksi->prepare("
         p.status,
         p.status_pembayaran,
         p.dibuat_pada,
-        -- ambil pembayaran yang sudah diterima (jika ada)
-        pb.kode_pembayaran,
-        pb.total_pembayaran  AS nominal_diterima,
-        pb.tanggal_bayar,
-        pb.status            AS status_bayar
+        pb.kode_pembayaran_terakhir AS kode_pembayaran,
+        pb.nominal_diterima,
+        pb.tanggal_bayar_terakhir   AS tanggal_bayar,
+        pb.status_bayar
     FROM pesanan p
-    LEFT JOIN pembayaran pb
-        ON pb.id_pesanan = p.id_pesanan
-        AND pb.status = 'Diterima'
+    LEFT JOIN (
+        SELECT
+            id_pesanan,
+            SUM(total_pembayaran)                                   AS nominal_diterima,
+            MAX(tanggal_bayar)                                      AS tanggal_bayar_terakhir,
+            SUBSTRING_INDEX(
+                GROUP_CONCAT(kode_pembayaran ORDER BY tanggal_bayar DESC),
+                ',', 1
+            )                                                        AS kode_pembayaran_terakhir,
+            'Diterima'                                               AS status_bayar
+        FROM pembayaran
+        WHERE status = 'Diterima'
+        GROUP BY id_pesanan
+    ) pb ON pb.id_pesanan = p.id_pesanan
     WHERE DATE(p.dibuat_pada) BETWEEN :tgl_awal AND :tgl_akhir
     ORDER BY p.dibuat_pada DESC
 ");
@@ -67,18 +79,26 @@ $pesanan_list = $stmt->fetchAll();
 
 /* =====================================================================
    RINGKASAN AGREGAT
+   Pakai subquery pembayaran yang sama (sudah 1 baris per id_pesanan)
+   supaya SUM(p.jumlah) dan SUM total pembayaran tidak dobel.
    ===================================================================== */
 $stmt_ring = $koneksi->prepare("
     SELECT
         COUNT(DISTINCT p.id_pesanan)                    AS total_pesanan,
         COALESCE(SUM(p.jumlah), 0)                      AS total_produk,
-        COALESCE(SUM(pb.total_pembayaran), 0)           AS total_pendapatan,
+        COALESCE(SUM(pb.nominal_diterima), 0)           AS total_pendapatan,
         COUNT(DISTINCT CASE WHEN p.status = 'Selesai'       THEN p.id_pesanan END) AS jml_selesai,
         COUNT(DISTINCT CASE WHEN p.status_pembayaran
                             = 'Belum Dibayar'            THEN p.id_pesanan END) AS jml_belum_bayar
     FROM pesanan p
-    LEFT JOIN pembayaran pb
-        ON pb.id_pesanan = p.id_pesanan AND pb.status = 'Diterima'
+    LEFT JOIN (
+        SELECT
+            id_pesanan,
+            SUM(total_pembayaran) AS nominal_diterima
+        FROM pembayaran
+        WHERE status = 'Diterima'
+        GROUP BY id_pesanan
+    ) pb ON pb.id_pesanan = p.id_pesanan
     WHERE DATE(p.dibuat_pada) BETWEEN :tgl_awal AND :tgl_akhir
 ");
 $stmt_ring->execute([':tgl_awal' => $tgl_awal, ':tgl_akhir' => $tgl_akhir]);
@@ -355,7 +375,7 @@ function bayarBadge(string $status): string
                                 <td><?= rupiah($p['total_tagihan']) ?></td>
                                 <td>
                                     <?php
-                                        // Tampilkan status bayar dari tabel pembayaran
+                                        // Tampilkan status bayar dari tabel pembayaran (sudah diagregasi)
                                         // jika ada record diterima, atau fallback ke status_pembayaran di pesanan
                                         $statusBayar = $p['status_bayar']
                                             ? $p['status_bayar']

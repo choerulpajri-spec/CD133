@@ -230,7 +230,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($data['kategori_pesanan'] === 'produk_custom') {
         $catatan_final = $data['catatan'];
-        if (!empty($_FILES['file_desain']['name'])) {
+
+        // File desain WAJIB untuk pesanan custom.
+        // Cek juga error upload (misal file terlalu besar dari sisi php.ini,
+        // koneksi terputus, dll) lewat kode error PHP, bukan cuma nama file.
+        $file_error = $_FILES['file_desain']['error'] ?? UPLOAD_ERR_NO_FILE;
+
+        if ($file_error === UPLOAD_ERR_NO_FILE || empty($_FILES['file_desain']['name'])) {
+            $errors['file_desain'] = 'Upload referensi desain wajib diisi untuk pesanan custom.';
+        } elseif ($file_error !== UPLOAD_ERR_OK) {
+            $errors['file_desain'] = 'Upload gagal, silakan coba lagi (kemungkinan file terlalu besar).';
+        } else {
             $ekstensi_diizinkan = ['jpg', 'jpeg', 'png', 'pdf'];
             $ekstensi = strtolower(pathinfo($_FILES['file_desain']['name'], PATHINFO_EXTENSION));
             if (!in_array($ekstensi, $ekstensi_diizinkan)) $errors['file_desain'] = 'File harus JPG, PNG, atau PDF.';
@@ -1412,14 +1422,14 @@ body {
                             </div>
 
                             <div class="field field--full">
-                                <label for="file_desain">Upload Referensi Desain (opsional)</label>
+                                <label for="file_desain">Upload Referensi Desain</label>
                                 <div class="file-drop">
-                                    <input type="file" id="file_desain" name="file_desain" accept=".jpg,.jpeg,.png,.pdf">
+                                    <input type="file" id="file_desain" name="file_desain" accept=".jpg,.jpeg,.png,.pdf" required>
                                 </div>
                                 <?php if (isset($errors['file_desain'])): ?>
                                     <span class="field-error"><?= $errors['file_desain'] ?></span>
                                 <?php else: ?>
-                                    <span class="field-hint">Format JPG, PNG, atau PDF. Maksimal 5MB.</span>
+                                    <span class="field-hint">Format JPG, PNG, atau PDF. Maksimal 5MB. Wajib diisi untuk pesanan custom.</span>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -1452,11 +1462,22 @@ body {
     var blokJadi          = document.getElementById('blokProdukJadi');
     var blokCustom        = document.getElementById('blokProdukCustom');
 
+    var inputFileDesain = document.getElementById('file_desain');
+
     function tampilkanBlokKategori() {
         var terpilih = document.querySelector('input[name="kategori_pesanan"]:checked');
         var nilai = terpilih ? terpilih.value : '';
         if (blokJadi)   blokJadi.classList.toggle('is-visible', nilai === 'produk_jadi');
         if (blokCustom) blokCustom.classList.toggle('is-visible', nilai === 'produk_custom');
+
+        // File desain hanya wajib kalau kategori custom yang aktif
+        if (inputFileDesain) {
+            if (nilai === 'produk_custom') {
+                inputFileDesain.setAttribute('required', 'required');
+            } else {
+                inputFileDesain.removeAttribute('required');
+            }
+        }
     }
 
     radiosKategori.forEach(function (r) {
